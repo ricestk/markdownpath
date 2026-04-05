@@ -1,0 +1,38 @@
+import { state, progressPct as computePct } from '../state.js';
+import { TOTAL_LESSONS } from '../lessons.js';
+
+const NAV = [
+  { href: '#/', label: 'บทเรียน', match: (h) => h === '' || h === '/' || h.startsWith('/lesson') },
+  { href: '#/exercises', label: 'แบบฝึกหัด', match: (h) => h.startsWith('/exercises') },
+  { href: '#/cheatsheet', label: 'Cheat Sheet', match: (h) => h.startsWith('/cheatsheet') },
+  { href: '#/community', label: 'Community', match: (h) => h.startsWith('/community') },
+];
+
+export function renderHeader(route) {
+  const el = document.getElementById('site-header');
+  const hash = route || '/';
+  el.innerHTML = `
+    <div class="header-inner">
+      <a href="#/" class="logo">
+        <span class="logo-mark">Md</span>
+        <span class="logo-text">MarkdownPath</span>
+      </a>
+      <nav class="nav">
+        ${NAV.map(n => `<a href="${n.href}" class="${n.match(hash) ? 'active' : ''}">${n.label}</a>`).join('')}
+      </nav>
+      <div class="header-right">
+        <span class="stat-pill">🔥 ${state.streak}-day streak</span>
+        <span class="stat-pill">⭐ ${state.xp} XP</span>
+        <button class="cta-btn" id="cta-start">เริ่มเลย ฟรี</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('cta-start').addEventListener('click', () => {
+    location.hash = '#/lesson/1';
+  });
+
+  // progress strip
+  const pct = computePct(TOTAL_LESSONS);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${state.completed.length}/${TOTAL_LESSONS} บท · ${pct}%`;
+}
