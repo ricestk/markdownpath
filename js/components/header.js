@@ -1,4 +1,4 @@
-import { state, progressPct as computePct } from '../state.js';
+import { state, progressPct as computePct, isSignedUp, getUser } from '../state.js';
 import { TOTAL_LESSONS } from '../lessons.js';
 
 const NAV = [
@@ -23,13 +23,19 @@ export function renderHeader(route) {
       <div class="header-right">
         <span class="stat-pill">🔥 ${state.streak}-day streak</span>
         <span class="stat-pill">⭐ ${state.xp} XP</span>
-        <button class="cta-btn" id="cta-start">เริ่มเลย ฟรี</button>
+        ${isSignedUp()
+          ? `<a href="#/profile" class="profile-avatar">${getUser().email[0].toUpperCase()}</a>`
+          : `<button class="cta-btn" id="cta-start">เข้าสู่ระบบ</button>`
+        }
       </div>
     </div>
   `;
-  document.getElementById('cta-start').addEventListener('click', () => {
-    location.hash = '#/lesson/1';
-  });
+  const ctaBtn = document.getElementById('cta-start');
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', () => {
+      location.hash = '#/signup';
+    });
+  }
 
   // progress strip
   const pct = computePct(TOTAL_LESSONS);
