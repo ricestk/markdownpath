@@ -10,6 +10,8 @@ const DEFAULT_STATE = {
   lastVisit: null,         // 'YYYY-MM-DD'
   visitDates: [],          // last 30 dates
   user: null,              // { email, password, gender, age, signedUpAt }
+  visitCount: 0,           // total site visits
+  isGuest: false,          // guest mode flag
 };
 
 function todayStr() {
@@ -131,9 +133,28 @@ export function reset() {
   save(); emit();
 }
 
+// ---- Visit counter ----
+export function incrementVisitCount() {
+  state.visitCount = (state.visitCount || 0) + 1;
+  save();
+}
+export function getVisitCount() { return state.visitCount || 0; }
+
+// ---- Guest mode ----
+export function enterGuestMode() {
+  state.isGuest = true;
+  save(); emit();
+}
+export function exitGuestMode() {
+  state.isGuest = false;
+  save(); emit();
+}
+export function isGuest() { return !!state.isGuest; }
+
 // ---- User auth helpers ----
-export function saveUser({ email, password, gender, age }) {
-  state.user = { email, password, gender, age, signedUpAt: new Date().toISOString() };
+export function saveUser({ email, password, gender, age, signedUpAt }) {
+  state.user = { email, password, gender, age, signedUpAt: signedUpAt || new Date().toISOString() };
+  state.isGuest = false;
   save(); emit();
 }
 export function getUser() { return state.user; }
