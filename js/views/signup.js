@@ -1,5 +1,6 @@
 // Signup view — 2-step registration form
 import { saveUser, isSignedUp } from '../state.js';
+import { eyeClosedSVG, initPasswordToggle } from './auth-helpers.js';
 
 export function renderSignup() {
   if (isSignedUp()) { location.hash = '#/profile'; return; }
@@ -30,15 +31,23 @@ export function renderSignup() {
           </div>
           <div class="form-group">
             <label for="signup-password">รหัสผ่าน</label>
-            <input type="password" id="signup-password" class="form-input" placeholder="อย่างน้อย 6 ตัวอักษร" value="${data.password}">
+            <div class="password-wrapper">
+              <input type="password" id="signup-password" class="form-input" placeholder="อย่างน้อย 6 ตัวอักษร" value="${data.password}">
+              <button type="button" class="password-toggle" id="toggle-password">${eyeClosedSVG}</button>
+            </div>
             <div class="form-error" id="password-error"></div>
           </div>
           <div class="form-actions">
             <button class="btn btn-primary" id="btn-next">ถัดไป</button>
           </div>
+          <div class="auth-switch">
+            มีบัญชีแล้ว? <a href="#/login">เข้าสู่ระบบ</a>
+          </div>
         </div>
       </div>
     `;
+
+    initPasswordToggle('signup-password', 'toggle-password');
 
     document.getElementById('btn-next').addEventListener('click', () => {
       const email = document.getElementById('signup-email').value.trim();

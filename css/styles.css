@@ -368,6 +368,19 @@ code, pre { font-family: var(--mono); }
 }
 .gender-opt:hover { border-color: var(--accent); background: rgba(45,107,228,.06); }
 .gender-opt.selected { background: rgba(45,107,228,.08); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+/* Password toggle */
+.password-wrapper { position: relative; }
+.password-wrapper .form-input { padding-right: 42px; }
+.password-toggle {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; padding: 4px; cursor: pointer; color: var(--text-muted);
+  display: grid; place-items: center; line-height: 0;
+}
+.password-toggle:hover { color: var(--text); }
+.password-toggle svg { width: 20px; height: 20px; }
+/* Auth switch link */
+.auth-switch { text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted); }
+.auth-switch a { font-weight: 600; }
 
 /* ========= Profile ========= */
 .profile-avatar {
@@ -409,3 +422,17 @@ code, pre { font-family: var(--mono); }
   font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s;
 }
 .logout-btn:hover { background: var(--danger); color: #fff; }
+
+/* ========= Responsive Auth & Profile ========= */
+@media (max-width: 767px) {
+  .auth-container { margin: 24px 16px; }
+  .auth-card { padding: 24px; }
+  .profile-container { margin: 24px 16px; }
+  .profile-card { padding: 24px; }
+  .profile-stats { flex-wrap: wrap; }
+  .profile-stat { min-width: 80px; }
+  .gender-options { flex-wrap: wrap; }
+  .gender-opt { min-width: calc(50% - 4px); }
+  .profile-row { flex-direction: column; gap: 2px; }
+  .profile-header { flex-direction: column; text-align: center; }
+}

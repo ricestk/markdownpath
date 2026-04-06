@@ -33,7 +33,7 @@ export function renderHeader(route) {
   const ctaBtn = document.getElementById('cta-start');
   if (ctaBtn) {
     ctaBtn.addEventListener('click', () => {
-      location.hash = '#/signup';
+      location.hash = '#/login';
     });
   }
 

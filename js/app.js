@@ -7,6 +7,7 @@ import { renderHome } from './views/home.js';
 import { renderLesson } from './views/lesson.js';
 import { renderCheatsheet } from './views/cheatsheet.js';
 import { renderSignup } from './views/signup.js';
+import { renderLogin } from './views/login.js';
 import { renderProfile } from './views/profile.js';
 import { getLesson } from './lessons.js';
 
@@ -74,6 +75,12 @@ async function route() {
         `).join('')}
       </div>
     `;
+    renderRightPanel(null);
+    return;
+  }
+  if (path.startsWith('/login')) {
+    renderSidebar(null);
+    renderLogin();
     renderRightPanel(null);
     return;
   }
