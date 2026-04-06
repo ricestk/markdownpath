@@ -1,5 +1,6 @@
 // Signup view — 2-step registration form
 import { saveUser, isSignedUp } from '../state.js';
+import { createMember } from '../supabase.js';
 import { eyeClosedSVG, initPasswordToggle } from './auth-helpers.js';
 
 export function renderSignup() {
@@ -120,7 +121,7 @@ export function renderSignup() {
       renderStep();
     });
 
-    document.getElementById('btn-submit').addEventListener('click', () => {
+    document.getElementById('btn-submit').addEventListener('click', async () => {
       const age = document.getElementById('signup-age').value.trim();
       let valid = true;
 
@@ -138,8 +139,29 @@ export function renderSignup() {
       if (!valid) return;
 
       data.age = Number(age);
-      saveUser(data);
-      location.hash = '#/profile';
+
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'กำลังสมัคร...';
+
+      try {
+        const member = await createMember(data);
+        saveUser({ ...data, signedUpAt: member.signed_up_at });
+        location.hash = '#/profile';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'สมัครสมาชิก';
+        if (err.message === 'EMAIL_EXISTS') {
+          step = 1;
+          renderStep();
+          setTimeout(() => {
+            const el = document.getElementById('email-error');
+            if (el) el.textContent = 'อีเมลนี้ถูกใช้งานแล้ว';
+          }, 50);
+        } else {
+          document.getElementById('age-error').textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+        }
+      }
     });
   }
 

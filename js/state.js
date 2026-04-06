@@ -152,8 +152,9 @@ export function exitGuestMode() {
 export function isGuest() { return !!state.isGuest; }
 
 // ---- User auth helpers ----
-export function saveUser({ email, password, gender, age }) {
-  state.user = { email, password, gender, age, signedUpAt: new Date().toISOString() };
+export function saveUser({ email, password, gender, age, signedUpAt }) {
+  state.user = { email, password, gender, age, signedUpAt: signedUpAt || new Date().toISOString() };
+  state.isGuest = false;
   save(); emit();
 }
 export function getUser() { return state.user; }

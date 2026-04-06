@@ -1,5 +1,6 @@
 // Login view — email + password login form
-import { getUser, isSignedUp, isGuest, enterGuestMode, getVisitCount } from '../state.js';
+import { saveUser, isSignedUp, isGuest, enterGuestMode, getVisitCount } from '../state.js';
+import { getMemberByEmail } from '../supabase.js';
 import { eyeClosedSVG, initPasswordToggle } from './auth-helpers.js';
 
 export function renderLogin() {
@@ -49,7 +50,7 @@ export function renderLogin() {
     location.hash = '#/';
   });
 
-  document.getElementById('btn-login').addEventListener('click', () => {
+  document.getElementById('btn-login').addEventListener('click', async () => {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
 
@@ -65,16 +66,37 @@ export function renderLogin() {
       return;
     }
 
-    const user = getUser();
-    if (!user) {
-      document.getElementById('email-error').textContent = 'ไม่พบบัญชี กรุณาสมัครสมาชิก';
-      return;
-    }
-    if (user.email !== email || user.password !== password) {
-      document.getElementById('password-error').textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
-      return;
-    }
+    const btn = document.getElementById('btn-login');
+    btn.disabled = true;
+    btn.textContent = 'กำลังเข้าสู่ระบบ...';
 
-    location.hash = '#/profile';
+    try {
+      const member = await getMemberByEmail(email);
+      if (!member) {
+        document.getElementById('email-error').textContent = 'ไม่พบบัญชี กรุณาสมัครสมาชิก';
+        btn.disabled = false;
+        btn.textContent = 'เข้าสู่ระบบ';
+        return;
+      }
+      if (member.password !== password) {
+        document.getElementById('password-error').textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+        btn.disabled = false;
+        btn.textContent = 'เข้าสู่ระบบ';
+        return;
+      }
+
+      saveUser({
+        email: member.email,
+        password: member.password,
+        gender: member.gender,
+        age: member.age,
+        signedUpAt: member.signed_up_at,
+      });
+      location.hash = '#/profile';
+    } catch {
+      document.getElementById('password-error').textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+      btn.disabled = false;
+      btn.textContent = 'เข้าสู่ระบบ';
+    }
   });
 }
