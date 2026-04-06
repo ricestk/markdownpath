@@ -1,11 +1,13 @@
 // MarkdownPath — app entry, router, init
-import { state, subscribe, updateStreak } from './state.js';
+import { state, subscribe, updateStreak, isSignedUp } from './state.js';
 import { renderHeader } from './components/header.js';
 import { renderSidebar } from './components/sidebar.js';
 import { renderRightPanel } from './components/rightPanel.js';
 import { renderHome } from './views/home.js';
 import { renderLesson } from './views/lesson.js';
 import { renderCheatsheet } from './views/cheatsheet.js';
+import { renderSignup } from './views/signup.js';
+import { renderProfile } from './views/profile.js';
 import { getLesson } from './lessons.js';
 
 // ---- Toast helper ----
@@ -72,6 +74,18 @@ async function route() {
         `).join('')}
       </div>
     `;
+    renderRightPanel(null);
+    return;
+  }
+  if (path.startsWith('/signup')) {
+    renderSidebar(null);
+    renderSignup();
+    renderRightPanel(null);
+    return;
+  }
+  if (path.startsWith('/profile')) {
+    renderSidebar(null);
+    renderProfile();
     renderRightPanel(null);
     return;
   }

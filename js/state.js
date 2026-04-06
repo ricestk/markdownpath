@@ -9,6 +9,7 @@ const DEFAULT_STATE = {
   streak: 0,
   lastVisit: null,         // 'YYYY-MM-DD'
   visitDates: [],          // last 30 dates
+  user: null,              // { email, password, gender, age, signedUpAt }
 };
 
 function todayStr() {
@@ -127,6 +128,18 @@ export function getWeekVisits() {
 
 export function reset() {
   Object.assign(state, { ...DEFAULT_STATE });
+  save(); emit();
+}
+
+// ---- User auth helpers ----
+export function saveUser({ email, password, gender, age }) {
+  state.user = { email, password, gender, age, signedUpAt: new Date().toISOString() };
+  save(); emit();
+}
+export function getUser() { return state.user; }
+export function isSignedUp() { return !!state.user; }
+export function clearUser() {
+  state.user = null;
   save(); emit();
 }
 
