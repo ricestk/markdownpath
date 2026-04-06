@@ -381,6 +381,36 @@ code, pre { font-family: var(--mono); }
 /* Auth switch link */
 .auth-switch { text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted); }
 .auth-switch a { font-weight: 600; }
+/* Divider "or" */
+.divider-or {
+  text-align: center; margin: 20px 0; position: relative;
+  color: var(--text-muted); font-size: 13px;
+}
+.divider-or::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 100%; height: 1px; background: var(--border);
+}
+.divider-or span {
+  background: #fff; padding: 0 12px; position: relative; z-index: 1;
+}
+/* Guest button */
+.btn-guest {
+  width: 100%; padding: 10px; background: var(--bg-alt, #f7f8fa);
+  border: 1px solid var(--border); border-radius: var(--radius-sm, 6px);
+  font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer;
+  transition: all .15s;
+}
+.btn-guest:hover { background: var(--border); }
+/* Guest avatar */
+.guest-avatar { background: var(--text-muted) !important; }
+/* Visit counter */
+.visit-counter {
+  text-align: center; margin-top: 20px; font-size: 13px;
+  color: var(--text-muted); padding: 10px;
+  background: var(--bg-alt, #f7f8fa); border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--border);
+}
+.visit-counter strong { color: var(--accent); font-size: 15px; }
 
 /* ========= Profile ========= */
 .profile-avatar {

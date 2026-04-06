@@ -1,5 +1,5 @@
 // MarkdownPath — app entry, router, init
-import { state, subscribe, updateStreak, isSignedUp } from './state.js';
+import { state, subscribe, updateStreak, isSignedUp, incrementVisitCount } from './state.js';
 import { renderHeader } from './components/header.js';
 import { renderSidebar } from './components/sidebar.js';
 import { renderRightPanel } from './components/rightPanel.js';
@@ -128,12 +128,14 @@ subscribe(() => {
 
 window.addEventListener('hashchange', route);
 window.addEventListener('DOMContentLoaded', () => {
+  incrementVisitCount();
   updateStreak();
   route();
 });
 
 // If DOMContentLoaded already fired
 if (document.readyState !== 'loading') {
+  incrementVisitCount();
   updateStreak();
   route();
 }

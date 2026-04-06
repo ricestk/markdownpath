@@ -1,11 +1,14 @@
 // Login view — email + password login form
-import { getUser, isSignedUp } from '../state.js';
-import { eyeOpenSVG, eyeClosedSVG, initPasswordToggle } from './auth-helpers.js';
+import { getUser, isSignedUp, isGuest, enterGuestMode, getVisitCount } from '../state.js';
+import { eyeClosedSVG, initPasswordToggle } from './auth-helpers.js';
 
 export function renderLogin() {
   if (isSignedUp()) { location.hash = '#/profile'; return; }
+  if (isGuest()) { location.hash = '#/'; return; }
 
   const container = document.getElementById('main-view');
+  const visits = getVisitCount();
+
   container.innerHTML = `
     <div class="auth-container">
       <div class="auth-card">
@@ -27,14 +30,24 @@ export function renderLogin() {
         <div class="form-actions">
           <button class="btn btn-primary" id="btn-login">เข้าสู่ระบบ</button>
         </div>
+        <div class="divider-or"><span>หรือ</span></div>
+        <button class="btn-guest" id="btn-guest">เข้าใช้งานแบบไม่ลงทะเบียน</button>
         <div class="auth-switch">
           ยังไม่มีบัญชี? <a href="#/signup">สมัครสมาชิก</a>
         </div>
+      </div>
+      <div class="visit-counter">
+        มีผู้เข้าใช้งานแล้ว <strong>${visits.toLocaleString()}</strong> ครั้ง
       </div>
     </div>
   `;
 
   initPasswordToggle('login-password', 'toggle-password');
+
+  document.getElementById('btn-guest').addEventListener('click', () => {
+    enterGuestMode();
+    location.hash = '#/';
+  });
 
   document.getElementById('btn-login').addEventListener('click', () => {
     const email = document.getElementById('login-email').value.trim();

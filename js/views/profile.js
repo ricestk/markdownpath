@@ -1,5 +1,5 @@
 // Profile view — displays user info, stats, logout
-import { state, getUser, isSignedUp, clearUser } from '../state.js';
+import { state, getUser, isSignedUp, clearUser, getVisitCount } from '../state.js';
 
 export function renderProfile() {
   if (!isSignedUp()) { location.hash = '#/signup'; return; }
@@ -55,6 +55,10 @@ export function renderProfile() {
           <div class="profile-stat">
             <div class="num">${state.completed.length}</div>
             <div class="lbl">บทเรียนสำเร็จ</div>
+          </div>
+          <div class="profile-stat">
+            <div class="num">${getVisitCount()}</div>
+            <div class="lbl">เข้าใช้งาน</div>
           </div>
         </div>
         <button class="logout-btn" id="btn-logout">ออกจากระบบ</button>

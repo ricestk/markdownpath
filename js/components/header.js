@@ -1,4 +1,4 @@
-import { state, progressPct as computePct, isSignedUp, getUser } from '../state.js';
+import { state, progressPct as computePct, isSignedUp, getUser, isGuest, getVisitCount } from '../state.js';
 import { TOTAL_LESSONS } from '../lessons.js';
 
 const NAV = [
@@ -21,11 +21,14 @@ export function renderHeader(route) {
         ${NAV.map(n => `<a href="${n.href}" class="${n.match(hash) ? 'active' : ''}">${n.label}</a>`).join('')}
       </nav>
       <div class="header-right">
+        <span class="stat-pill" title="เข้าใช้งานแล้ว ${getVisitCount()} ครั้ง">👁 ${getVisitCount()}</span>
         <span class="stat-pill">🔥 ${state.streak}-day streak</span>
         <span class="stat-pill">⭐ ${state.xp} XP</span>
         ${isSignedUp()
           ? `<a href="#/profile" class="profile-avatar">${getUser().email[0].toUpperCase()}</a>`
-          : `<button class="cta-btn" id="cta-start">เข้าสู่ระบบ</button>`
+          : isGuest()
+            ? `<a href="#/login" class="profile-avatar guest-avatar" title="ผู้เยี่ยมชม">G</a>`
+            : `<button class="cta-btn" id="cta-start">เข้าสู่ระบบ</button>`
         }
       </div>
     </div>
