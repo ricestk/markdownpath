@@ -151,13 +151,22 @@ export function exitGuestMode() {
 export function isGuest() { return !!state.isGuest; }
 
 // ---- User auth helpers ----
-export function saveUser({ email, password, gender, age, signedUpAt }) {
-  state.user = { email, password, gender, age, signedUpAt: signedUpAt || new Date().toISOString() };
+export function saveUser({ email, password, gender, age, signedUpAt, displayName }) {
+  state.user = {
+    email, password, gender, age,
+    signedUpAt: signedUpAt || new Date().toISOString(),
+    displayName: displayName || email.split('@')[0],
+  };
   state.isGuest = false;
   save(); emit();
 }
 export function getUser() { return state.user; }
 export function isSignedUp() { return !!state.user; }
+export function updateDisplayName(name) {
+  if (!state.user) return;
+  state.user.displayName = name;
+  save(); emit();
+}
 export function clearUser() {
   state.user = null;
   save(); emit();

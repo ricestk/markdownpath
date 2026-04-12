@@ -25,7 +25,7 @@ export function renderHeader(route) {
         <span class="stat-pill">🔥 ${state.streak}-day streak</span>
         <span class="stat-pill">⭐ ${state.xp} XP</span>
         ${isSignedUp()
-          ? `<a href="#/profile" class="profile-avatar">${getUser().email[0].toUpperCase()}</a>`
+          ? `<a href="#/profile" class="profile-avatar">${(getUser().displayName || getUser().email)[0].toUpperCase()}</a>`
           : isGuest()
             ? `<a href="#/login" class="profile-avatar guest-avatar" title="ผู้เยี่ยมชม">G</a>`
             : `<button class="cta-btn" id="cta-start">เข้าสู่ระบบ</button>`

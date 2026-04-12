@@ -53,3 +53,17 @@ export async function updateMemberVisitCount(email, visitCount) {
   const data = await res.json();
   return data[0];
 }
+
+export async function updateMemberDisplayName(email, displayName) {
+  const res = await fetch(
+    `${REST}/members?email=eq.${encodeURIComponent(email)}`,
+    {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify({ display_name: displayName }),
+    }
+  );
+  if (!res.ok) throw new Error('update failed');
+  const data = await res.json();
+  return data[0];
+}
