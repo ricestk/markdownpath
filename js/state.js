@@ -80,9 +80,8 @@ function maybeComplete(lessonId) {
   }
 }
 
-export function isLocked(lessonId) {
-  if (lessonId === 1) return false;
-  return !state.completed.includes(lessonId - 1);
+export function isLocked() {
+  return false;
 }
 
 export function progressPct(totalLessons) {
